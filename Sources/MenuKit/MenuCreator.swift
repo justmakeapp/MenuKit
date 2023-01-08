@@ -109,4 +109,8 @@ public extension MenuElementCreator {
 
 public struct AnyMenuElementCreator<M: MenuElement>: MenuElementCreator {
     public var menuElement: M
+
+    public init(menuElement: M) {
+        self.menuElement = menuElement
+    }
 }
