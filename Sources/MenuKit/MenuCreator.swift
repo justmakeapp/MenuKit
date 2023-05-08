@@ -1,6 +1,5 @@
 //
 //  AppMenu.swift
-//  Metacard
 //
 //  Created by Long Vu on 06/12/2022.
 //
