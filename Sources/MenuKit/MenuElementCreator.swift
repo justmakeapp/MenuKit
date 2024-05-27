@@ -26,7 +26,7 @@ public enum MenuElementHandler {
 
 public protocol MenuElementType: RawRepresentable {}
 
-public protocol MenuElement {
+public protocol AbstractMenuElement {
     associatedtype ElementType: MenuElementType
     var type: ElementType { get set }
     var title: String { get }
@@ -39,7 +39,7 @@ public protocol MenuElement {
     #endif
 }
 
-public protocol AbstractSingleMenuElement: MenuElement {
+public protocol AbstractSingleMenuElement: AbstractMenuElement {
     var handler: MenuElementHandler { get set }
     #if os(iOS)
         var identifier: UIAction.Identifier? { get }
@@ -52,7 +52,7 @@ public protocol AbstractSingleMenuElement: MenuElement {
     var input: String { get }
 }
 
-public protocol AbstractSubMenuElement: MenuElement {
+public protocol AbstractSubMenuElement: AbstractMenuElement {
     #if os(iOS)
 
         @available(iOS 16.0, *)
@@ -64,17 +64,17 @@ public protocol AbstractSubMenuElement: MenuElement {
         @available(iOS 16.0, *)
         var preferredElementSize: UIMenu.ElementSize { get set }
 
-        var children: [any MenuElement] { get set }
+        var children: [any AbstractMenuElement] { get set }
     #endif
 }
 
 public protocol MenuElementCreator {
-    var menuElement: any MenuElement { get set }
+    var menuElement: any AbstractMenuElement { get set }
     func makeMenuElement() -> PlatformMenuElement?
 }
 
 public extension MenuElementCreator {
-    private static func makeChildren(_ children: [any MenuElement]) -> [PlatformMenuElement] {
+    private static func makeChildren(_ children: [any AbstractMenuElement]) -> [PlatformMenuElement] {
         var results = children.compactMap { element in
             let creator = AnyMenuElementCreator(menuElement: element)
             return creator.makeMenuElement()
@@ -163,9 +163,9 @@ public extension MenuElementCreator {
 }
 
 public struct AnyMenuElementCreator: MenuElementCreator {
-    public var menuElement: any MenuElement
+    public var menuElement: any AbstractMenuElement
 
-    public init(menuElement: any MenuElement) {
+    public init(menuElement: any AbstractMenuElement) {
         self.menuElement = menuElement
     }
 }
