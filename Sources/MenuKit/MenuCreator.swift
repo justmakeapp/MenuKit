@@ -18,6 +18,7 @@
     public typealias PlatformMenuElement = NSMenuItem
 #endif
 
+@MainActor
 public protocol MenuCreator {
     func makeMenu() -> PlatformMenu
     func makeChildren() -> [PlatformMenuElement]

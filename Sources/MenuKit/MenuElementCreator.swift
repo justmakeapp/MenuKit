@@ -68,6 +68,7 @@ public protocol AbstractSubMenuElement: AbstractMenuElement {
     #endif
 }
 
+@MainActor
 public protocol MenuElementCreator {
     var menuElement: any AbstractMenuElement { get set }
     func makeMenuElement() -> PlatformMenuElement?
